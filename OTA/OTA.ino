@@ -10,8 +10,8 @@
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
 
-const char* ssid = "test";
-const char* password = "1234567890";
+const char* ssid = "Home";
+const char* password = "narzieagle1992@#$%";
 
 void setup() {
   //wifi conneting
