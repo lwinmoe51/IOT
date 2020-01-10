@@ -2,6 +2,9 @@
   Rui Santos
   Complete project details at https://randomnerdtutorials.com  
 *********/
+const char* http_username = "lwin moe";
+const char* http_password = "123456";
+
 
 // Import required libraries
 #include "WiFi.h"
@@ -10,8 +13,8 @@
 #include <DHT.h>
 
 // Replace with your network credentials
-const char* ssid = "test";
-const char* password = "1234567890";
+const char* ssid = "Home";
+const char* password = "narzieagle1992@#$%";
 
 #define DHTPIN 27     // Digital pin connected to the DHT sensor
 
@@ -28,7 +31,8 @@ AsyncWebServer server(80);
 String readDHTTemperature() {
   // Sensor readings may also be up to 2 seconds 'old' (its a very slow sensor)
   // Read temperature as Celsius (the default)
-  float t = dht.readTemperature();
+  //float t = dht.readTemperature();
+  float t = 20;
   // Read temperature as Fahrenheit (isFahrenheit = true)
   //float t = dht.readTemperature(true);
   // Check if any reads failed and exit early (to try again).
@@ -37,14 +41,15 @@ String readDHTTemperature() {
     return "--";
   }
   else {
-    Serial.println(t);
+    Serial.println();
     return String(t);
   }
 }
 
 String readDHTHumidity() {
   // Sensor readings may also be up to 2 seconds 'old' (its a very slow sensor)
-  float h = dht.readHumidity();
+  //float h = dht.readHumidity();
+  float h = 50;
   if (isnan(h)) {
     Serial.println("Failed to read from DHT sensor!");
     return "--";
@@ -144,16 +149,29 @@ void setup(){
 
   // Print ESP32 Local IP Address
   Serial.println(WiFi.localIP());
-
+server.on("/login", HTTP_GET, [](AsyncWebServerRequest *request){
+    if(!request->authenticate(http_username, http_password))
+        return request->requestAuthentication();
+    request->send(200, "text/plain", "Login Success!");
+  });
   // Route for root / web page
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+    int headers = request->headers();
+    int i;
+    for(i=0;i<headers;i++){
+      AsyncWebHeader* h = request->getHeader(i);
+      Serial.printf("HEADER[%s]: %s\n", h->name().c_str(), h->value().c_str());
+    }
     request->send_P(200, "text/html", index_html, processor);
   });
   server.on("/temperature", HTTP_GET, [](AsyncWebServerRequest *request){
     request->send_P(200, "text/plain", readDHTTemperature().c_str());
   });
   server.on("/humidity", HTTP_GET, [](AsyncWebServerRequest *request){
-    request->send_P(200, "text/plain", readDHTHumidity().c_str());
+    AsyncWebServerResponse *response = request->beginResponse(200, "text/plain",readDHTTemperature().c_str());
+    response->addHeader("Server","ESP Async Web Server");
+request->send(response);
+ //   request->send_P(200, "text/plain", readDHTHumidity().c_str());
   });
 
   // Start server

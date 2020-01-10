@@ -1,23 +1,40 @@
 #include <EEPROM.h>
-String username = "LWIN MOE";
-String password = "1234567890";
-int length_arr[2];
+
+  String username = "admin";
+  String password = "adminpass";
+  String ssid = "LWIN";
+  String ssidpass = "LWINpass";
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(9600);
+  Serial.begin(115200);
   EEPROM.begin(512);
-  writeEEPROM();
+
+  //get from user
+
+
+  writeIndex("username",username.length());
+    writeIndex("password",password.length());
+      writeIndex("ssid",ssid.length());
+        writeIndex("ssidpass",ssidpass.length());
+  writeEEPROM(username,password,ssid,ssidpass);
   
 }
 
+
 void loop() {
   // put your main code here, to run repeatedly:
-  String a = getUsername();
-  String b = getPassword();
-  //Serial.println(length_arr[0]);
-  //Serial.println(length_arr[1]);
-  Serial.println(a);
-  Serial.println(b);
+
+  
+
+  Serial.println(readEEPROM("username"));
+  Serial.println(readEEPROM("password"));
+  Serial.println(readEEPROM("ssid"));
+  Serial.println(readEEPROM("ssidpass"));
+  Serial.println(readIndex("username"));
+  Serial.println(readIndex("password"));
+  Serial.println(readIndex("ssid"));
+  Serial.println(readIndex("ssidpass"));
+  //Serial.println(b);
   delay(2000);
   
 }
