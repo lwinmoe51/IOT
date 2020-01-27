@@ -1,7 +1,7 @@
 const int coin = 2;
 boolean insert = false;
 volatile int pulse = 0;
-unsigned long balance;
+unsigned long balance =0;
 
 void setup() {
   // put your setup code here, to run once:
@@ -13,11 +13,12 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   if (insert) {
-    insert = false;
+    
     //Serial.println("coin detected!");
     balance+=1000;
     Serial.println("Balance : "+(String)balance);
     delay(1000);
+    insert = false;
   }
 }
 
