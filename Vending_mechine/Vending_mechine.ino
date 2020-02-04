@@ -65,7 +65,7 @@ void loop() {
         lcd.setCursor(1,0);
         lcd.print("Adding cola");
         digitalWrite(led,HIGH);
-        delay(7000); //time for full cup
+        delay(3000); //time for full cup
         digitalWrite(led,LOW);
         lcd.clear();
         lcd.setCursor(4,0);
