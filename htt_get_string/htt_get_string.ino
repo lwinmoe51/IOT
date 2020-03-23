@@ -1,8 +1,8 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
  
-const char* ssid = "test";
-const char* password =  "1234567890";
+const char* ssid = "Home";
+const char* password =  "narzieagle1992@#$%";
  
 void setup() {
  
@@ -25,7 +25,7 @@ void loop() {
  
     HTTPClient http;
  
-    http.begin("http://jsonplaceholder.typicode.com/comments?id=10"); 
+    http.begin("http://ppk.pythonanywhere.com/iot"); 
     int httpCode = http.GET();                                        
  
     if (httpCode > 0) { 
@@ -35,7 +35,7 @@ void loop() {
         Serial.println(payload);
         Serial.println("Saving to SPIFFS....");
         
-        Serial.print
+       
       }
  
     else {
